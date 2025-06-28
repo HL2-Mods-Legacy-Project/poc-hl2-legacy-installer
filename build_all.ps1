@@ -33,6 +33,8 @@ param (
   [string]$PublishPath
 )
 
+# test
+
 $CMakeOutputPath = "$PSScriptRoot/CMakeOutput" -replace "\\", "/"
 
 $ModFolder = (Split-Path -Path $ModFilesPath -Leaf)
