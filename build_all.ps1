@@ -68,6 +68,13 @@ cmake `
   "-DMOD_BASE_FILES_PATH=$ModBaseFilesPath" `
   -P $PSScriptRoot\CMakeLists.txt
 
+# Delete previous artifacts.
+if (Test-Path -Path "$PublishPath")
+{
+  Write-Host "Delete previous artifacts: ""$PublishPath""" -ForegroundColor Yellow
+  Remove-Item -Path "$PublishPath\*" -Recurse -Force
+}
+
 # Create the temporary artifact mod folder
 Write-Host "Create temp artifact mod folder: ""$ArtifactModPath""" -ForegroundColor Yellow
 New-Item -ItemType Directory -Path $ArtifactModPath -Force | Out-Null
