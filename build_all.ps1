@@ -2,7 +2,11 @@ param (
   [Parameter(Mandatory=$true)]
   [ValidateNotNullorEmpty()]
   [string]$Version,
-  
+
+  [Parameter(Mandatory=$true)]
+  [ValidateNotNullorEmpty()]
+  [string]$OutputFilePrefix,
+
   [Parameter(Mandatory=$true)]
   [ValidateNotNullorEmpty()]
   [string]$ModName,
@@ -83,7 +87,7 @@ Copy-Item -Path $PSScriptRoot\Installer\licenses\* -Destination $ArtifactModPath
 
 # 1. Build the installer.
 
-$OutputName = "$($ModFolder)_$($Version)_Windows_x86"
+$OutputName = "$($OutputFilePrefix)_$($Version)_Windows_x86"
 $OutputExe = "$OutputName.exe"
 
 $NsisArguments = @(
