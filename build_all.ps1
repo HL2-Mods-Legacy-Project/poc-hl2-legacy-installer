@@ -33,7 +33,7 @@ param (
   [string]$PublishPath
 )
 
-# test
+## test
 
 $CMakeOutputPath = "$PSScriptRoot/CMakeOutput" -replace "\\", "/"
 
