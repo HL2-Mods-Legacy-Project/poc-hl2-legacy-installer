@@ -22,12 +22,6 @@ param (
   [Parameter(Mandatory=$true)]
   [ValidateNotNullorEmpty()]
   [string]$ModBaseFilesUrlHash,
-  
-  <#
-  [Parameter(Mandatory=$true)]
-  [ValidateNotNullorEmpty()]
-  [string]$ModBaseFilesPath,
-  #>
 
   [Parameter(Mandatory=$false)]
   [string]$ModReadmePath,
@@ -36,8 +30,6 @@ param (
   [ValidateNotNullorEmpty()]
   [string]$PublishPath
 )
-
-# test
 
 $CMakeOutputPath = "$PSScriptRoot/CMakeOutput" -replace "\\", "/"
 
@@ -48,16 +40,6 @@ $ModBaseFilesPath = "$CMakeOutputPath/downloads/BaseModFiles"
 $ModFilesPath = $ModFilesPath -replace "\\", "/"
 $PublishPath = "$PublishPath/release_win-x86" -replace "\\", "/" 
 $ArtifactModPath = "$PublishPath/$ModFolder" -replace "\\", "/" 
-
-<#
-$ModFolder
-$Version
-$ModFilesPath
-$ModBaseFilesUrl
-$ModBaseFilesUrlHash
-$ModBaseFilesPath
-$PublishPath
-#>
 
 Write-Host "Download base mod files to ""$ModBaseFilesPath""" -ForegroundColor Yellow
 cmake `
@@ -112,22 +94,8 @@ if ($PSBoundParameters.ContainsKey('ModReadmePath')) {
   $NsisArguments += "/DMOD_README_PATH=""$ModReadmePath"""
 }
 
-#$NsisArguments
-
 Write-Host "Build mod installer." -ForegroundColor Yellow
 makensis.exe @NsisArguments $PSScriptRoot\Installer\ModInstaller.nsi
-
-<#
-makensis.exe `
-  /DNAME="$ModName" `
-  /DCAPTION="$ModName" `
-  /DVERSION="$Version" `
-  /DMOD_FOLDER="$ModFolder" `
-  /DMOD_FILES_PATH="$ArtifactModPath" `
-  /DOUTPUTFILE="$OutputExe" `
-  -V3 `
-  $PSScriptRoot\Installer\ModInstaller.nsi
-#>
 
 # Publish .exe to the publish path.
 Write-Host "Publish mod installer to ""$PublishPath/$OutputExe""" -ForegroundColor Yellow
