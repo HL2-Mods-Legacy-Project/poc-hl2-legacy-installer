@@ -10,6 +10,7 @@ Legacy HL2 mod installer proof of concept (POC) - only for development purposes.
 
 - CMake 4.0.2
 - NSIS 3.11
+- PowerShell 5.1
 
 ## Contributing
 
