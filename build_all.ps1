@@ -39,11 +39,15 @@ $CMakeOutputPath = "$PSScriptRoot/CMakeOutput" -replace "\\", "/"
 
 $ModFolder = (Split-Path -Path $ModFilesPath -Leaf)
 $ModBaseFilesPath = "$CMakeOutputPath/downloads/BaseModFiles"
+$ModBaseFilesPathBackslash = $ModBaseFilesPath -replace "/", "\"
 
 # Convert to Unix path separators for CMake.
 $ModFilesPath = $ModFilesPath -replace "\\", "/"
+$ModFilesPathBackslash = $ModFilesPath -replace "/", "\"
+
 $PublishPath = "$PublishPath/release_win-x86" -replace "\\", "/" 
 $ArtifactModPath = "$PublishPath/$ModFolder" -replace "\\", "/" 
+$ArtifactModPathBackslash = $ArtifactModPath -replace "/", "\"
 
 Write-Host "Download base mod files to ""$ModBaseFilesPath""" -ForegroundColor Yellow
 cmake `
@@ -67,16 +71,16 @@ New-Item -ItemType Directory -Path $ArtifactModPath -Force | Out-Null
 
 # Copy base mod files
 Write-Host "Copy base mod files to artifacts mod folder." -ForegroundColor Yellow
-Copy-Item -Path $ModBaseFilesPath\* -Destination $ArtifactModPath -Recurse -Force
+xcopy $ModBaseFilesPathBackslash\* $ArtifactModPathBackslash /E /Q /S /Y
 
 # Copy updated mod files
 Write-Host "Copy updated mod files to artifacts mod folder." -ForegroundColor Yellow
-Copy-Item -Path $ModFilesPath\* -Destination $ArtifactModPath -Recurse -Force
+xcopy $ModFilesPathBackslash\* $ArtifactModPathBackslash /E /Q /S /Y
 
 # Copy licenses
 New-Item -ItemType Directory -Path $ArtifactModPath\licenses -Force | Out-Null
 Write-Host "Copy license files to artifacts mod folder." -ForegroundColor Yellow
-Copy-Item -Path $PSScriptRoot\Installer\licenses\* -Destination $ArtifactModPath\licenses -Recurse -Force
+xcopy $PSScriptRoot\Installer\licenses\* $ArtifactModPathBackslash\licenses /E /Q /S /Y
 
 # 1. Build the installer.
 $FullVersion = $Version
