@@ -79,17 +79,17 @@ Write-Host "Copy license files to artifacts mod folder." -ForegroundColor Yellow
 Copy-Item -Path $PSScriptRoot\Installer\licenses\* -Destination $ArtifactModPath\licenses -Recurse -Force
 
 # 1. Build the installer.
-
+$FullVersion = $Version
 if ($PSBoundParameters.ContainsKey('PreReleaseVersion')) {
-  $OutputName = "$($OutputFilePrefix)_$($Version)-$($PreReleaseVersion)_Windows_x86"
-} else {
-  $OutputName = "$($OutputFilePrefix)_$($Version)_Windows_x86"
+  $FullVersion += "-$PreReleaseVersion"
 }
+
+$OutputName = "$($OutputFilePrefix)_$($FullVersion)_Windows_x86"
 $OutputExe = "$OutputName.exe"
 
 $NsisArguments = @(
   "/DNAME=""$ModName"""
-  "/DCAPTION=""$ModName"""
+  "/DCAPTION=""$ModName v$FullVersion"""
   "/DVERSION=""$Version"""
   "/DMOD_FOLDER=""$ModFolder"""
   "/DMOD_FILES_PATH=""$ArtifactModPath"""
