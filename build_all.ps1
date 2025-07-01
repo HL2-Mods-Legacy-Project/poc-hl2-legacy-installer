@@ -3,6 +3,10 @@ param (
   [ValidateNotNullorEmpty()]
   [string]$Version,
 
+  [Parameter(Mandatory=$false)]
+  [ValidateNotNullorEmpty()]
+  [string]$PreReleaseVersion,
+
   [Parameter(Mandatory=$true)]
   [ValidateNotNullorEmpty()]
   [string]$OutputFilePrefix,
@@ -76,7 +80,11 @@ Copy-Item -Path $PSScriptRoot\Installer\licenses\* -Destination $ArtifactModPath
 
 # 1. Build the installer.
 
-$OutputName = "$($OutputFilePrefix)_$($Version)_Windows_x86"
+if ($PSBoundParameters.ContainsKey('PreReleaseVersion')) {
+  $OutputName = "$($OutputFilePrefix)_$($Version)-$($PreReleaseVersion)_Windows_x86"
+} else {
+  $OutputName = "$($OutputFilePrefix)_$($Version)_Windows_x86"
+}
 $OutputExe = "$OutputName.exe"
 
 $NsisArguments = @(
